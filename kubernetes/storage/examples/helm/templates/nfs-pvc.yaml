@@ -1,0 +1,13 @@
+# Rakenduse, ntx Ruuteri PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.nfs.pvcName }}
+  namespace: {{ .Values.namespace }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.nfs.storageSize }}
+  volumeName: {{ .Values.nfs.pvName }}
