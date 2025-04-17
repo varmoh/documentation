@@ -96,4 +96,7 @@ Luua Kubernetes’i klastrisse lahendus, kus iga namespace saab oma **RWX (ReadW
 
 - Vajab manuaalset PersistentVolume kirjeldamist (või automatiseerimist Helm chartiga).
 
-    Võrreldes CephFS või Portworxiga ei ole ideaalne väga suurtel klastritel või väga intensiivsete RWX workloadide jaoks.
+- Võrreldes CephFS või Portworxiga ei ole ideaalne väga suurtel klastritel või väga intensiivsete RWX workloadide jaoks.
+
+### Näited
+https://github.com/varmoh/documentation/tree/main/kubernetes/storage/examples/helm
