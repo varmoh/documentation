@@ -1,0 +1,11 @@
+namespace: foo
+
+nfs:
+  image: itsthenetwork/nfs-server-alpine:latest
+  storageSize: 1Gi
+  backendPvcName: foo-nfs-backend-pvc
+  nfsPath: /nfsshare
+  serviceName: foo-nfs-service
+  pvName: foo-nfs-pv
+  pvcName: foo-nfs-pvc
+  storageClass: longhorn
