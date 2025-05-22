@@ -1,15 +1,16 @@
- Client GUI (Kliendi kasutajaliides)
-
 **Kirjeldus:**  
-Arendada kliendi GUI, mis kuvab uuenduste teavitusi ja võimaldab uuenduste käivitamist. - olemas ?
-Central centops - genereerib manifeste, pushib noificationse
+Loo central CentOps haldusliides 
 
-**Tegevused:**  
-- Kujunda kasutajasõbralik UI  
-- Integreeri agent teenuse endpointidega  
-- Testi kasutajaliidese funktsionaalsust
+Kontekst:
+CentOps peab võimaldama operaatoritel reaalajas nähtavust süsteemi oleku, telemeetria ja diagnostika kohta. Selleks kasutatakse peamiselt olemasolevaid tööriistu nagu Prometheus, Grafana, Kubernetes Dashboard, vältides uute GUI-de loomist, kui see pole hädavajalik.
 
-**Valmisoleku kriteeriumid:**  
-- [ ] GUI kuvab korrektselt uuenduste infot  
-- [ ] Uuenduste käivitamine toimib sujuvalt  
-- [ ] Dokumentatsioon ja kasutusjuhend olemas
+Eesmärk:
+Arendada või integreerida graafiline kasutajaliides, mis:
+
+- eksponeerib CentOps komponentide ja pipeline'ide käitusoleku
+
+- austab klientide vahelist andmeeraldatust
+
+- võimaldab piiratud juhtimistoiminguid (nt rollback)
+
+- on mitmekeskkonnateadlik ja turvaline
