@@ -4,15 +4,14 @@
 Loo automatiseeritud töövood GitHub Actionsi abil, mis toetavad pidevat integreerimist (CI) ja tarnet (CD). Töövood peavad hõlmama testimist, buildimist ja deploy'd Kubernetese klastri staging-keskkonda.
 
 **Tegevused:**
-- Loo `.github/workflows/ci.yml` – käivitub iga Pull Requesti puhul.
-- Loo `.github/workflows/cd.yml` – käivitub `main` harule push'imisel.
-- CI töövoog peab:
-  - Checkout’ima koodi
-  - Käivitama testid (nt `pytest`, `jest`, `go test`?)
-  - Ehita Docker image
+- Dev to test ehitab image (PR) -       KEHTIB AINULT BÜROKRATI   komponentide ja moodulite repode suhtes  
+  - CI töövoog peab:
+    - Checkout’ima koodi
+    - Käivitama testid (nt `pytest`, `jest`, `go test`?)
+    - Ehita Docker image
 - CD töövoog peab:
-  - Deploy’ma image staging-Kubernetes klastri
-  - Teavitama ebaõnnestumisest
+  - notifikation central centopsi
+  - Teavitama ebaõnnestumisest (kui image build feilib aga see ei peaks olema centopsi jaoks oluline)
 - Hoia töövood DRY – vajadusel kasuta eraldi `reusable workflows`.
 
 **Valmisoleku kriteeriumid:**
@@ -26,6 +25,7 @@ Loo automatiseeritud töövood GitHub Actionsi abil, mis toetavad pidevat integr
 Koosta Dockerfile’id, mis võimaldavad arendajatel lokaalset arendust (dev-pilt) ning produktsiooniklastrisse tarnet (prod-pilt). Pildid peavad olema efektiivsed, väikesed ja versioonitavad.
 
 **Tegevused:**
+- Analüüsida hetke seisu repodes
 - Loo `Dockerfile.dev`:
   - Sisaldab debug tööriistu ja hot-reload võimalust
   - Sobib lokaalseks arendamiseks
@@ -39,6 +39,7 @@ Koosta Dockerfile’id, mis võimaldavad arendajatel lokaalset arendust (dev-pil
 - [ ] Dockerfile’id töötavad lokaalselt ja CI/CD keskkonnas
 - [ ] Image’d on versioneeritud (nt semver või commit hash)
 - [ ] Dokumentatsioon sisaldab: build käske, keskkonnamuutujate kasutust ja töövoogu
+- [ ] 
 ### Ülesanne: Kujunda Kubernetese-põhine tarneprotsess (Helm/Kustomize)
 
 **Kirjeldus:**  
@@ -59,26 +60,18 @@ Välja tuleb töötada standardiseeritud ja taaskasutatav Kubernetese deployment
 - [ ] Lahendust saab kasutada vähemalt kahe eri keskkonna juurutamiseks
 - [ ] Dokumentatsioon sisaldab juurutusjuhiseid ja konfiguratsiooni struktuuri
 
-### Ülesanne: Integreeri GitHub Actions ja Kubernetes
+### Ülesanne: Integreeri GitHub Actions ja central centops
 
 **Kirjeldus:**  
-Tuleb seadistada mehhanism, mis võimaldab GitHub Actions töövoogudel automaatselt juurutada rakendusi Kubernetese klastrisse. See peab töötama usaldusväärselt nii staging- kui ka produktsioonikeskkonnas, järgides turvanõudeid (näiteks GitHub Secrets kasutus).
+Tuleb seadistada mehhanism, mis võimaldab GitHub Actions töövoogudel automaatselt teavitada central centopsi.
 
 **Tegevused:**
-- Loo vajalikud Kubernetes kubeconfig või service account credentials
-- Lisa need GitHub reposse salajasena (Secrets kaudu)
-- Täienda olemasolevat CD workflow’d:
-  - Kasuta `kubectl`, `helm` või `kustomize` CLI tööriistu
-  - Lisa deploy-samm staging- ja/või prod-keskkonda
-- Lisa mehhanism deploy ebaõnnestumiste raporteerimiseks (näiteks Slack, e-mail või GitHub Actions failure notice)
+- Uurida weebhooki tööd
 
 **Valmisoleku kriteeriumid:**
-- [ ] GitHub Actions töövoog suudab rakenduse edukalt deploy’da Kubernetes klastri staging-keskkonda
-- [ ] Klastri autentimine on turvaline (kasutatavad Secrets, mitte kõva kood)
-- [ ] Deployment on idempotentne ja kontrollitav (`kubectl rollout status`, jne)
-- [ ] Dokumentatsioon sisaldab: kasutatud CLI-d, keskkonnamuutujate nimekiri, hädaolukorra tõrjejuhised
+- [ ] GitHub Actions töövoog suudab edukalt suhelda central centopsiga
 
-### Ülesanne: Seadista automatiseeritud testide käivitamine PR-ide puhul
+### Ülesanne: Seadista automatiseeritud testide käivitamine PR-ide puhul centops repos
 
 **Kirjeldus:**  
 Kõik Pull Requestid peavad läbima automaatsed testid enne mergimist. Töövoog peab olema konfigureeritud nii, et testid jooksevad igal PR-il ja tulemused on nähtavad GitHub UI-s (pass/fail).
@@ -92,6 +85,7 @@ Kõik Pull Requestid peavad läbima automaatsed testid enne mergimist. Töövoog
   - Failimuutused käivitavad vastavad testid (nt ainult backend/frontend)
   - Test coverage arvutamine, kui asjakohane
 - Lisa testide ebaõnnestumise korral töövoogu stop/error mehhanism
+- Uuri kas meil on mingid end-to-end testid juba olemas või mõtle kas on midagi mid saab kuskilt kasutada
 
 **Valmisoleku kriteeriumid:**
 - [ ] Testid käivituvad automaatselt igal PR-il
