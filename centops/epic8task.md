@@ -1,8 +1,9 @@
 **Kirjeldus:**  
-Kliendi GUI peab integreeruma olemasoleva Bürokratt kasutajaliidesega.
+Kliendi GUI peab integreeruma olemasoleva Bürokratt kasutajaliidesega - olemas.
+Central centops - Kasutama figmas loodud lahendst?
 
 **Tegevused:**  
-- Kaardista Bürokratt GUI arhidektuur  
+
 - Rakenda integreerimisliidesed ja komponendid  
 - Testi integreeritud kasutuskogemust
 
