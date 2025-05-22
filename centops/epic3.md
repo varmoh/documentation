@@ -1,4 +1,4 @@
-### Ülesanne: Toeta dünaamilist N arvu klienti
+### Ülesanne: Toeta dünaamilist N arvu klienti/mitme kliend haldus
 
 **Kirjeldus:**  
 Lahendus peab toetama suvalist arvu kliente, keda saab dünaamiliselt lisada ja eemaldada, ilma teenuse katkestuseta. Igal kliendil peab olema eraldatud keskkond või loogiline eristamine (nt namespace’id, tenant-id’d).
