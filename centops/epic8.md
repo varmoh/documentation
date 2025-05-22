@@ -1,7 +1,8 @@
  Client GUI (Kliendi kasutajaliides)
 
 **Kirjeldus:**  
-Arendada kliendi GUI, mis kuvab uuenduste teavitusi ja võimaldab uuenduste käivitamist.
+Arendada kliendi GUI, mis kuvab uuenduste teavitusi ja võimaldab uuenduste käivitamist. - olemas ?
+Central centops - genereerib manifeste, pushib noificationse
 
 **Tegevused:**  
 - Kujunda kasutajasõbralik UI  
