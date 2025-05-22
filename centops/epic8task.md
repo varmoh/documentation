@@ -1,12 +1,16 @@
 **Kirjeldus:**  
-Kliendi GUI peab integreeruma olemasoleva Bürokratt kasutajaliidesega - olemas.
-Central centops - Kasutama figmas loodud lahendst?
+Loo central CentOps haldusliides 
 
-**Tegevused:**  
+Kontekst:
+CentOps peab võimaldama operaatoritel reaalajas nähtavust süsteemi oleku, telemeetria ja diagnostika kohta. Selleks kasutatakse peamiselt olemasolevaid tööriistu nagu Prometheus, Grafana, Kubernetes Dashboard, vältides uute GUI-de loomist, kui see pole hädavajalik.
 
-- Rakenda integreerimisliidesed ja komponendid  
-- Testi integreeritud kasutuskogemust
+Eesmärk:
+Arendada või integreerida graafiline kasutajaliides, mis:
 
-**Valmisoleku kriteeriumid:**  
-- [ ] Integreerimine on sujuv ja kasutajasõbralik  
-- [ ] Integreeritud GUI on testitud ja dokumenteeritud
+    eksponeerib CentOps komponentide ja pipeline'ide käitusoleku
+
+    austab klientide vahelist andmeeraldatust
+
+    võimaldab piiratud juhtimistoiminguid (nt rollback)
+
+    on mitmekeskkonnateadlik ja turvaline
