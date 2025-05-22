@@ -7,10 +7,10 @@ CentOps peab võimaldama operaatoritel reaalajas nähtavust süsteemi oleku, tel
 Eesmärk:
 Arendada või integreerida graafiline kasutajaliides, mis:
 
-    eksponeerib CentOps komponentide ja pipeline'ide käitusoleku
+- eksponeerib CentOps komponentide ja pipeline'ide käitusoleku
 
-    austab klientide vahelist andmeeraldatust
+- austab klientide vahelist andmeeraldatust
 
-    võimaldab piiratud juhtimistoiminguid (nt rollback)
+- võimaldab piiratud juhtimistoiminguid (nt rollback)
 
-    on mitmekeskkonnateadlik ja turvaline
+- on mitmekeskkonnateadlik ja turvaline
