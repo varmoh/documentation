@@ -1,3 +1,4 @@
+Notification system (Teavitussüsteem)
 **Kirjeldus:**  
 Rakendada API endpoints, mis teenindavad struktuurseid uuenduste manifeste klientidele.
 
