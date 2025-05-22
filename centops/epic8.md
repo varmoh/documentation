@@ -15,4 +15,4 @@ Arendada või integreerida graafiline kasutajaliides, mis:
 
 - võimaldab piiratud juhtimistoiminguid (nt rollback) -- tõsta see ymber kliendi GUI alla
 
-- on mitmekeskkonnateadlik ja turvaline
+- on mitmekeskkonnateadlik ja turvaline  -- tõsta see ymber kliendi GUI alla
