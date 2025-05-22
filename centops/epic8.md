@@ -1,5 +1,7 @@
 **Kirjeldus:**  
-Loo central CentOps haldusliides 
+Loo central CentOps haldusliides   
+IDEE - Välja mõelda arhidektuur, et lisada pluginitena teisi mooduleid (DMR, commonknowledge, classifier)  
+A-la placehlderid tulevikus, et ei peaks tegema mitut "tagatuba"
 
 Kontekst:
 CentOps peab võimaldama operaatoritel reaalajas nähtavust süsteemi oleku, telemeetria ja diagnostika kohta. Selleks kasutatakse peamiselt olemasolevaid tööriistu nagu Prometheus, Grafana, Kubernetes Dashboard, vältides uute GUI-de loomist, kui see pole hädavajalik.
