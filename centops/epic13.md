@@ -7,14 +7,14 @@ valideerimist, talletamist ja kättesaadavaks tegemist klientide agentidele.
 
 ```mermaid
 flowchart TD
-    A["Koodihoidla (GitHub)"] --> B[CI/CD töövoog käivitub]
-    B --> C[Andmete kogumine: komponendid, versioonid, konfiguratsioonid]
-    C --> D["Manifesti koostamine (JSON/YAML)"]
+    A["Koodihoidla (GitHub)"] --> B[CI/CD töövoog käivitub - DEV to TEST]
+    B --> C[CENTOPS algab siit andmete kogumine: komponendid, versioonid, konfiguratsioonid]
+    C --> D["Manuaalne Manifesti koostamine (JSON/YAML)"]
     D --> E["Manifesti valideerimine (skeem, keelatud väljad)"]
     E -->|Õnnestus| F[CENTRAL CENTOPS Manifest salvestatakse registrisse]
     E -->|Ebaõnnestus| G[Vigade logimine ja teavitamine]
     F --> H[CENTRAL CENTOPS API kaudu kättesaadav kliendiagentidele]
-    H --> I[CENTRAL&CLIENT CENTOPS Kliendiagent küsib või saab teate uuendustest]
+    H --> I[CENTRAL&CLIENT CENTOPS Kliendiagent küsib uuendustest]
     I --> J[CLIENT CENTOPS Manifesti rakendamine kliendikeskkonnas]
 
     style A fill:#a2d2ff,stroke:#333,stroke-width:2px
