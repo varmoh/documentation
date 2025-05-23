@@ -2,5 +2,5 @@
 graph TD
   A[Environments]
   A --> B[Klientide Keskkondade Nimekiri]
-  A --> C[Komponentide Tervise Info]
+  A --> C[Komponentide Info]
   A --> D[Discovery Metadata]
