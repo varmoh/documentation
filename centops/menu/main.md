@@ -8,3 +8,4 @@ graph TD
   A --> F[Alerts]
   A --> G[Audit Logs]
   A --> H[Settings]
+  A --> I[Secrets - kliendipõhised]
