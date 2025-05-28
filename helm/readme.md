@@ -1,4 +1,4 @@
-# My Combined Helm Chart
+# Combained Chart
 
 #### As example, I am using `ruuter` and `resql`
 
