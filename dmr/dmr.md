@@ -1,4 +1,4 @@
-# Messaging Backbone with RabbitMQ
+# DMR
 
 ## 1. Messaging Backbone with RabbitMQ
 
