@@ -17,7 +17,7 @@
 - Design metadata schema (headers/properties) for routing
 - Access control policy (who can send to whom)
 
-## 3. DMR-to-DMR Routing Layer
+## 3. [DMR-to-DMR Routing Layer](https://github.com/varmoh/documentation/blob/main/dmr/3-DMR-to-DMR.md)
 
 **Goal:** Enable secure relaying between DMRs using RabbitMQ federation or direct AMQP.
 
@@ -30,12 +30,12 @@
 
 **Goal:** Automate certificate generation and distribution from CentOps to clients and DMRs.
 
-- Add certificate config field to CentOps client definition
-- Integrate cert generation (e.g., via certbot or internal CA)
-- Auto-generate cert + key pair and upload to DMR / RabbitMQ
-- Handle rotation, revocation, and trust anchor updates
+- Add certificate config field to CentOps client definition (CENTOPS)
+- Integrate cert generation (e.g., via certbot or internal CA) (CENTOPS)
+- Certification passing to DMR / RabbitMQ  (Unclear for me)
+- Handle rotation, revocation, and trust anchor updates (CENTOPS?)
 
-## 5. Observability & Monitoring
+## 5. [Observability & Monitoring](https://github.com/varmoh/documentation/blob/main/dmr/5-observability-monitoring.md)
 
 **Goal:** Monitor message flows, failures, certificate health, and routing success.
 
@@ -44,7 +44,7 @@
 - Visualize topology and message hops (optional traces)
 - Log configuration reloads, failed deliveries, and policy violations
 
-## 6. Policy Management & Enforcement (OPA - OpenPolicyAgent)
+## 6. [Policy Management & Enforcement (OPA - OpenPolicyAgent)](https://github.com/varmoh/documentation/blob/main/dmr/6-Policy-management.md)
 
 **Goal:** Define and enforce rules like who can talk to whom and under what scope.
 
@@ -63,7 +63,7 @@
 - Optional: visual topology editor
 - CLI or API for bulk operations
 
-## 8. Operational Resilience & Bootstrap
+## 8. [Operational Resilience](https://github.com/varmoh/documentation/blob/main/dmr/8-operational-resilience.md)
 
 **Goal:** Handle node failures, recover state, and gracefully rejoin the mesh.
 
@@ -72,7 +72,7 @@
 - Network partition handling
 - Config validation before applying
 
-## 9. Security and Hardening
+## 9. [Security and Hardening](https://github.com/varmoh/documentation/blob/main/dmr/9-Security-hardening.md)
 
 **Goal:** Ensure all paths (client, DMR, CentOps) are secure, audit-logged, and revocable.
 
