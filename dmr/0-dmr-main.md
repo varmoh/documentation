@@ -1,6 +1,6 @@
 # DMR
 
-## 1. Messaging Backbone with RabbitMQ
+## 1. [Messaging Backbone with RabbitMQ](https://github.com/varmoh/documentation/blob/main/dmr/1-Messaging-backbone-rabbitmq.md)
 
 **Goal:** Set up, configure, and secure RabbitMQ as the core message relay system.
 
