@@ -10,9 +10,10 @@ All sensitive actions — like message rejections, config updates, or certificat
 
 Every connection — between clients and DMRs, between DMRs themselves, and between DMRs and CentOps — must use mutual TLS (mTLS). This ensures both ends authenticate each other and all traffic is encrypted.
 
-### Token Binding (if Used for Short-Lived Access)
 
-If you use short-lived tokens (e.g., JWTs) for access control, those tokens can be bound to specific TLS sessions or certificates. This prevents stolen tokens from being reused elsewhere, adding a second layer of defense.
+### ~~Token Binding (if Used for Short-Lived Access)~~
+
+~~If you use short-lived tokens (e.g., JWTs) for access control, those tokens can be bound to specific TLS sessions or certificates. This prevents stolen tokens from being reused elsewhere, adding a second layer of defense.~~
 
 ### Denylist Revocation Propagation and Enforcement
 
