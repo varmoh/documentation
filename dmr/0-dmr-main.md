@@ -9,13 +9,12 @@
 - Enforce secure communication (AMQPS with mTLS)
 - Set up message TTLs, DLQs, and audit queues
 
-## 2. Client-to-DMR Communication
+## 2. [Client-to-DMR Communication](https://github.com/varmoh/documentation/blob/main/dmr/2-client-to-dmr.md)
 
 **Goal:** Enable clients to connect, authenticate, and publish/consume messages securely.
 
 - Implement mTLS authentication for clients
 - Design metadata schema (headers/properties) for routing
-- Client SDK or reference implementation (producer/consumer)
 - Access control policy (who can send to whom)
 
 ## 3. DMR-to-DMR Routing Layer
