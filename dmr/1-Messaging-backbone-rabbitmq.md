@@ -2,7 +2,7 @@
 
 ## Provision RabbitMQ Clusters or Nodes (Locally or via Cloud)
 
-This means setting up RabbitMQ servers that will handle message passing. You can run these servers on your own hardware (local data centers) or use cloud services (like AWS, Azure, GCP). Clusters involve multiple RabbitMQ nodes working together for reliability and scalability.
+This means setting up RabbitMQ servers that will handle message passing. You can run these servers locally or use cloud services. Clusters involve multiple RabbitMQ nodes working together for reliability and scalability.
 
 ## Define Exchanges, Queues, and Routing Rules
 
