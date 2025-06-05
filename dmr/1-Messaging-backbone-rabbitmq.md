@@ -16,4 +16,4 @@ Messages sent between clients and RabbitMQ, or between RabbitMQ nodes, should be
 
 - **Message TTL (Time-To-Live):** Messages expire after a set time if not consumed, preventing old or stuck messages from clogging the system.
 - **Dead Letter Queues (DLQs):** Messages that can't be delivered or processed are sent here for inspection or retry.
-- **Audit Queues:** Special queues that keep track of message flow or security events for monitoring and troubleshooting. (Might use RabitMQ own interface for that)
+- **Audit Queues:** Special queues that keep track of message flow or security events for monitoring and troubleshooting. (Might use RabitMQ own interface for that and/or push info to Centops)
