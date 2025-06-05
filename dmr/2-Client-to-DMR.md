@@ -10,8 +10,8 @@ Clients must prove their identity using mutual TLS (mTLS). This means that when 
 
 Messages sent by clients include metadata—extra info in message headers or properties—that tells the DMR how to handle or route the message. For example, this includes information about who the message is for, its type, or priority.
 
-### Access Control Policy (Who Can Send to Whom)
+### ~~Access Control Policy (Who Can Send to Whom)~~
 
-Define and enforce rules that control which clients can send messages to which destinations. This ensures that only authorized communication flows, protecting the system from misuse or attacks.
+~~Define and enforce rules that control which clients can send messages to which destinations. This ensures that only authorized communication flows, protecting the system from misuse or attacks.~~
 
-Basically, this part ensures clients connect securely, follow the rules, and communicate properly with the DMR.
+~~Basically, this part ensures clients connect securely, follow the rules, and communicate properly with the DMR.~~
