@@ -151,15 +151,15 @@ Argo application side
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ruuter-clientA
+  name: clientA
   namespace: argocd
 spec:
   destination:
-    namespace: ruuter-clientA
+    namespace: clientA
     server: https://kubernetes.default.svc
   project: default
   source:
-    repoURL: https://github.com/buerokratt/ruuter-deploy
+    repoURL: https://github.com/buerokratt/NoOps
     targetRevision: main
     path: charts/ruuter-chart
     helm:
@@ -195,6 +195,49 @@ spec:
         property: password
 
 ```
+
+```mermaid
+flowchart TD
+  subgraph CentOps
+    A1[User opens CentOps UI]
+    A2[Clicks Add Manifest]
+    A3[Enters filename & YAML manifest]
+    A4[Save manifest to PostgreSQL via Ruuter DSL]
+  end
+
+  subgraph RuuterDSL
+    B1["HTTP GET /manifest/{client}/{version}"]
+    B2[Extract client & version from path]
+    B3[POST to reSQL endpoint with client & version]
+    B4[reSQL runs SQL query]
+    B5[Return YAML manifest content]
+  end
+
+  subgraph ArgoCD_Helm
+    C1[PreSync Job runs in Kubernetes]
+    C2[Job curls manifest YAML from Ruuter DSL endpoint]
+    C3[Saved as values/clientA.yaml in Job volume]
+    C4[Helm chart deploys with values/clientA.yaml]
+    C5[Deployment uses templated manifests with values]
+  end
+
+  subgraph Vault
+    D1[ExternalSecret configured in Helm]
+    D2[Fetch secrets from Vault]
+    D3[Inject secrets into Kubernetes secrets]
+  end
+
+  %% Connections
+  A1 --> A2 --> A3 --> A4
+  A4 --> B1
+  B1 --> B2 --> B3 --> B4 --> B5 --> C1
+  C1 --> C2 --> C3 --> C4 --> C5
+  D1 --> D2 --> D3
+  D3 --> C5
+
+  %% Styling
+  classDef box fill:#f9f,stroke:#333,stroke-width:1px,color:#000,font-weight:bold;
+  class CentOps,RuuterDSL,ArgoCD_Helm,Vault box;
 
 
 
