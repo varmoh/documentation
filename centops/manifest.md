@@ -59,25 +59,68 @@ extractRequestData:
   assign:
     client: ${incoming.path.client}
     version: ${incoming.path.version}
+    yaml: ${incoming.body}
+
+postManifest:
+  call: http.post
+  args:
+    url: "http://resql-service/centops/post_manifest.sql"
+    body:
+      client_id: ${client}
+      version: ${version}
+      yaml: ${yaml}
+  result: res
+  next: post_result
 
 fetchManifest:
   call: http.post
   args:
-    url: "http://resql-service/centops/manifest_get.sql"
+    url: "http://resql-service/centops/get_manifest.sql"
     body:
       client_id: ${client}
       version: ${version}
   result: res
+  next: get_return_result
 
-return_result:
+post_result:
+  return:200
+  next: end
+
+get_return_result:
   assign:
     yamlContent: ${res.response.body.rows[0].yaml}
   return: ${yamlContent}
-  next: end?
+  next: post_argo
+
+post_argo:
+  call: http.post
+  args:
+    url: http://argocd/api?endpoint
+    body: ${yamlContent}
+  next: end
 
 ```
 SQL
 ```
+
+-- Table schema
+CREATE TABLE manifests (
+  client_id TEXT NOT NULL,
+  version TEXT NOT NULL,
+  yaml TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW(),
+  PRIMARY KEY (client_id, version)
+);
+
+
+-- name: postManifest
+INSERT INTO manifests (client_id, version, yaml, created_at)
+VALUES (:client_id, :version, :yaml, NOW())
+ON CONFLICT (client_id, version) DO UPDATE
+  SET yaml = EXCLUDED.yaml,
+      created_at = NOW();
+---
+
 -- name: getManifest
 SELECT yaml
 FROM manifests
