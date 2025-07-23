@@ -32,17 +32,38 @@ GPU usage or cloud API costs are a concern.
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 
-texts = ["check my order", "cancel my subscription", "talk to agent"]
-labels = ["check_order", "cancel_subscription", "escalate"]
+# Sample dataset
+texts = [
+    "i need a new id card",
+    "apply for national id",
+    "renew my identity document",
+    "change my id pin",
+    "reset pin code for id",
+    "update my card pin",
+    "talk to a representative",
+    "i want to speak with an agent"
+]
+labels = [
+    "request_id_card",
+    "request_id_card",
+    "request_id_card",
+    "change_id_pin",
+    "change_id_pin",
+    "change_id_pin",
+    "escalate_to_agent",
+    "escalate_to_agent"
+]
 
+# Train the classifier
 vec = TfidfVectorizer()
 X = vec.fit_transform(texts)
-
 clf = LogisticRegression()
 clf.fit(X, labels)
 
-query = vec.transform(["i want to cancel"])
-print(clf.predict(query))  # -> "cancel_subscription"
+# Test it
+query = vec.transform(["i want to update my pin"])
+print(clf.predict(query))  # -> "change_id_pin"
+
 ```
 
 ## Method 2: spaCy Rule-Based Matching
@@ -67,13 +88,25 @@ from spacy.matcher import Matcher
 nlp = spacy.load("en_core_web_sm")
 matcher = Matcher(nlp.vocab)
 
-matcher.add("CANCEL_SUBSCRIPTION", [[{"LOWER": "cancel"}, {"LOWER": "subscription"}]])
+# Add a rule for ID card request
+matcher.add("REQUEST_ID_CARD", [[
+    {"LOWER": {"IN": ["need", "apply", "renew"]}},
+    {"LOWER": {"IN": ["id", "identity"]}},
+    {"LOWER": "card"}
+]])
 
-doc = nlp("please cancel my subscription")
+# Add a rule for changing PIN
+matcher.add("CHANGE_ID_PIN", [[
+    {"LOWER": {"IN": ["change", "reset", "update"]}},
+    {"LOWER": "pin"},
+    {"LOWER": "code", "OP": "?"}
+]])
+
+doc = nlp("i need to renew my identity card")
 matches = matcher(doc)
-
 for match_id, start, end in matches:
-    print(nlp.vocab.strings[match_id])  # -> CANCEL_SUBSCRIPTION
+    print(nlp.vocab.strings[match_id])  # -> REQUEST_ID_CARD
+
 ```
 
 ## Method 3: Sentence Transformers + kNN (Semantic Search)
@@ -96,25 +129,42 @@ from sentence_transformers import SentenceTransformer, util
 
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
+# Few-shot examples
 intents = {
-    "check_order": ["track my order", "where is my package"],
-    "cancel_subscription": ["i want to cancel", "stop my plan"],
-    "escalate": ["talk to agent", "speak with support"]
+    "request_id_card": [
+        "i need an id card",
+        "renew my identity document",
+        "apply for national id"
+    ],
+    "change_id_pin": [
+        "reset my id pin",
+        "change the pin code on my card",
+        "update id pin"
+    ],
+    "escalate_to_agent": [
+        "i want to talk to someone",
+        "speak to an agent",
+        "connect me with a representative"
+    ]
 }
 
+# Embed intent examples
 intent_embeddings = {
     intent: model.encode(samples, convert_to_tensor=True)
     for intent, samples in intents.items()
 }
 
-query_vec = model.encode("i need help cancelling", convert_to_tensor=True)
+# Test query
+query_vec = model.encode("how do I reset the PIN on my ID card?", convert_to_tensor=True)
 
+# Compare using cosine similarity
 scores = {
     intent: max(util.cos_sim(query_vec, embs)).item()
     for intent, embs in intent_embeddings.items()
 }
 
-print(max(scores, key=scores.get))  # -> cancel_subscription
+print(max(scores, key=scores.get))  # -> change_id_pin
+
 ```
 
 
