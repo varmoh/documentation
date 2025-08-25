@@ -50,6 +50,10 @@ flowchart TD
 - Get chat details from **PostgresSQL** using **ReSQL**.  
 - Send notifications (chat + message).
 
+### 10. Return Response
+- Reply with the chat object.  
+- Attach **Set-Cookie** header for the new/validated session. 
+
 ```mermaid
 flowchart TD
     A[Receive request<br/>JSON with message + device info] --> B["Extract values<br/>(message, holidays, device info)"]
@@ -76,6 +80,4 @@ flowchart TD
     N --> O[Return response<br/>Chat object + Set-Cookie]
 ```
 
-### 10. Return Response
-- Reply with the chat object.  
-- Attach **Set-Cookie** header for the new/validated session.  
+ 
