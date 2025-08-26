@@ -42,10 +42,10 @@ flowchart TD
 
 ### 7. Store Chat + Message in PostgresSQL (via ReSQL)
 - Insert the user’s first message.  
-- Create a new chat record (**status: OPEN**).  
+- Create a new chat record.  
 
 ### 8. Forward to Bot
-- Send the message + holiday data to the bot.  
+- Send the message.  
 - **If bot fails** → return `"Bot error"` with status **420**.  
 
 ### 9. Fetch Chat & Notify
