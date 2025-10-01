@@ -13,6 +13,8 @@ The module’s purpose is to:
 
 The focus is on the government environment.
 
+Source code and documentation can be found on the [RAG-Module GitHub repository](https://github.com/buerokratt/RAG-Module).
+
 ---
 
 ## Key Features
