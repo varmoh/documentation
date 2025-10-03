@@ -6,10 +6,10 @@ The **RAG-Module** (Retrieval-Augmented Generation Module) provides RAG capabili
 The module’s purpose is to:
 
 - Integrate with multiple LLM providers (AWS Bedrock, Azure AI, Google Cloud, OpenAI, Anthropic, or self-hosted open-source models).
-- Continuously synchronize with the Central Knowledge Base (CKB).
+- Continuously synchronize with the Local Knowledge Base (LKB).
 - Restrict responses to trusted sources only.
 - Add citations for transparency.
->Note: I dont know if this is implemented or if it even will - May implement a fallback mechanism (such as returning an **“I don’t know”** response) when confidence in the generated answer is low.
+- May implement a fallback mechanism (such as returning an **“I don’t know”** response) when confidence in the generated answer is low.
 
 The focus is on the government environment.
 
@@ -20,12 +20,12 @@ Source code and documentation can be found on the [RAG-Module GitHub repository]
 ## Key Features
 
 - **LLM Provider Management**: Administrators can configure multiple LLM connections and switch between them dynamically (dropdown with cache support).
-- **Continuous Sync with CKB**: Last sync time is displayed in the UI.
+- **Continuous Sync with LKB**: Last sync time is displayed in the UI.
 - **Answer Citations**: Each response is linked to its source.
 - **Fallback Mechanism**: If confidence is low, the response will be “I don’t know.”
 - **Monitoring and Analytics**:  
   - Langfuse dashboard for API usage, cost, and performance tracking  
-  - Grafana Loki logging and cost alerts for production monitoring
+  - Grafana Loki logging for production system monitoring
 
 ---
 
@@ -42,10 +42,10 @@ It resembles **LEGO blocks**: each component is independent and composable.
 - User query (via UI or API) is parsed, rephrased if needed, and disambiguated.
 
 ### 2. Retrieval Module
-- User queries are directed to the **vector database (Qdrant)**, which stores embeddings of content sourced from the Central Knowledge Base (CKB).
-- Continuous synchronization ensures the vector database is up-to-date with the latest cleaned and structured content from CKB.
+- User queries are directed to the **vector database (Qdrant)**, which stores embeddings of content sourced from the Local Knowledge Base (LKB).
+- Continuous synchronization ensures the vector database is up-to-date with the latest cleaned and structured content from LKB.
 - Uses **embeddings + similarity search** to retrieve relevant documents for LLM generation.
-> Note: The Central Knowledge Base (CKB) stores the authoritative content, while the vector database (Qdrant) stores embeddings for fast retrieval. They are synchronized but serve distinct purposes.
+> Note: The Local Knowledge Base (LKB) stores the authoritative content, while the vector database (Qdrant) stores embeddings for fast retrieval. They are synchronized but serve distinct purposes.
 
 
 ### 3. Generation Module
@@ -61,8 +61,7 @@ It resembles **LEGO blocks**: each component is independent and composable.
 ---
 
 ## Modularity and Separation of Concerns
-
-- Each LLM provider is an **independent connection module** → avoids monolithic code.
+- Each client has its own independent LLM connection modules, which avoids monolithic design and ensures isolation between deployments.
 - Retrieval, generation, and monitoring are separated → easier testing, updating, and scaling.
 - Synchronization handled via separate mechanism (e.g., cron/scheduled task).
 - Admin UI is a standalone management component.
@@ -75,7 +74,7 @@ It resembles **LEGO blocks**: each component is independent and composable.
 - **Citations + fallback mechanism**: Improves transparency and reduces hallucination risk.
 - **Observability**: Langfuse, Grafana Loki, and alerts provide a strong foundation for production.
 - **Modular architecture**: Easier maintenance and extensibility, avoids monoliths.
->Note: It is multilingual right? **Regulatory fit and multilingual support**: Designed for government context.
+- **Regulatory fit and multilingual support**: Designed for government context.
 
 ---
 
@@ -90,11 +89,10 @@ It resembles **LEGO blocks**: each component is independent and composable.
   - Performance tuning can be done individually for each client instance.
 
 - **Version management**:
-  - LLM models, embeddings, and indexing strategies need version control.
   - A/B testing and rollbacks should be handled independently per client deployment to avoid cross-impact.
 
 - **Sync consistency**:
-  - Keeping the client’s vector database up-to-date with CKB content may become complex for large or frequently updated knowledge bases.
+  - Keeping the client’s vector database up-to-date with LKB content may become complex for large or frequently updated knowledge bases.
   - Scheduled tasks/cron jobs should be monitored per client.
 
 - **Security & isolation**:
