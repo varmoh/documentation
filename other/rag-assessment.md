@@ -59,6 +59,13 @@ It resembles **LEGO blocks**: each component is independent and composable.
 - **Alerts** for cost overruns and reliability.
 
 ---
+## Safety and Compliance
+NVIDIA NeMo Guardrails ensure safe query handling and response generation:  
+- **Input rails** validate and filter user inputs, rejecting or modifying harmful/inappropriate queries.  
+- **Output rails** monitor and filter LLM responses, rejecting or correcting unsafe or sensitive outputs.  
+Together, these mechanisms enforce security and content policies within the RAG-Module.
+
+---
 
 ## Modularity and Separation of Concerns
 - Each client has its own independent LLM connection modules, which avoids monolithic design and ensures isolation between deployments.
