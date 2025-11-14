@@ -139,9 +139,9 @@ Süsteem koosneb kahest suuremast komponendist:
 
 ---
 
-# 🟦 Soovitused
+# Soovitused
 
 * Hoia scraper eraldi protsessina, mitte backendis
-* Hoia andmebaas ja embeddingud lokaalselt või väikese serveri Free Tieris
-* Uuenda scraper kord päevas/nädalas
-* Kasuta LLM-i ainult dokumentide selgitamiseks, mitte otseseks seaduslikuks nõuks
+* Hoia andmebaas ja embeddingud lokaalselt või näiteks AWS free tier
+* Uuenda kraabitud infot kord päevas/nädalas
+* Kasuta LLM-i ainult dokumentide selgitamiseks
