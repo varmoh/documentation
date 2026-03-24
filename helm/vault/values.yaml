@@ -69,6 +69,34 @@ initJob:
     secretName: vault-init-output
 
   resources: {}
+  
+bootstrapJob:
+  enabled: true
+
+  image:
+    repository: hashicorp/vault
+    tag: "1.21.3"
+    pullPolicy: IfNotPresent
+
+  vaultAddr: "http://vault-vault:8200"
+
+  bootstrapStorage:
+    size: 1Gi
+    accessMode: ReadWriteOnce
+    storageClassName: ""
+
+  agentCredentialsStorage:
+    size: 1Gi
+    accessMode: ReadWriteOnce
+    storageClassName: ""
+
+  agentTokenStorage:
+    enabled: false
+    size: 1Gi
+    accessMode: ReadWriteOnce
+    storageClassName: ""
+
+  resources: {}
 
 nodeSelector: {}
 
