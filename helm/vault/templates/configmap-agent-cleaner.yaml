@@ -1,0 +1,32 @@
+{{- if .Values.agentCleaner.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "vault.fullname" . }}-agent-cleaner-config
+  labels:
+    {{- include "vault.labels" . | nindent 4 }}
+data:
+  agent.hcl: |
+    pid_file = "/tmp/vault-agent-cleaner.pid"
+    exit_after_auth = false
+
+    vault {
+      address = "{{ .Values.agentCleaner.vaultAddr }}"
+    }
+
+    auto_auth {
+      method "approle" {
+        mount_path = "auth/approle"
+        config = {
+          role_id_file_path   = "{{ .Values.agentCleaner.roleIdFile }}"
+          secret_id_file_path = "{{ .Values.agentCleaner.secretIdFile }}"
+        }
+      }
+
+      sink "file" {
+        config = {
+          path = "{{ .Values.agentCleaner.tokenFile }}"
+        }
+      }
+    }
+{{- end }}
