@@ -43,7 +43,32 @@ ingress:
   path: /
   pathType: Prefix
 
-resources: {}
+initJob:
+  enabled: true
+
+  image:
+    repository: hashicorp/vault
+    tag: "1.21.3"
+    pullPolicy: IfNotPresent
+
+  vaultAddr: "http://vault-vault:8200"
+
+  backoffLimit: 1
+
+  wait:
+    enabled: true
+    retries: 60
+    sleepSeconds: 5
+
+  init:
+    keyShares: 5
+    keyThreshold: 3
+
+  output:
+    mode: secret
+    secretName: vault-init-output
+
+  resources: {}
 
 nodeSelector: {}
 
