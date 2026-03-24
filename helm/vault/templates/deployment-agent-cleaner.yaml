@@ -52,8 +52,11 @@ spec:
             timeoutSeconds: 3
             failureThreshold: 10
           livenessProbe:
-            tcpSocket:
-              port: 8200
+            exec:
+              command:
+                - /bin/sh
+                - -ec
+                - ps aux | grep '[v]ault agent' >/dev/null
             initialDelaySeconds: 20
             periodSeconds: 20
             timeoutSeconds: 3
