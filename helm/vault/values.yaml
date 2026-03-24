@@ -10,14 +10,22 @@ vault:
   skipVerifyConfigPermissions: "true"
 
 config:
-  ui: true
+  ui: false
+  apiAddr: "http://vault-vault:8200"
+
   listener:
     address: "0.0.0.0:8200"
     clusterAddress: "0.0.0.0:8201"
     tlsDisable: true
+
   storage:
     path: "/vault/file"
+
   disableMlock: true
+  defaultLeaseTtl: "168h"
+  maxLeaseTtl: "720h"
+  logLevel: "info"
+  logFormat: "json"
 
 service:
   type: ClusterIP
@@ -33,45 +41,26 @@ persistence:
 logs:
   enabled: true
 
-## Ingress tühjaks jätta, ei tohiks vajalik olla aga jätan võimaluse sisse
 ingress:
   enabled: false
   className: nginx
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-  host: vault
+  host: vault.example.internal
   path: /
   pathType: Prefix
-  
-  resources: {}
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
 
 initJob:
   enabled: false
 
-  image:
-    repository: hashicorp/vault
-    tag: "1.21.3"
-    pullPolicy: IfNotPresent
-
-  vaultAddr: "http://vault-vault:8200"
-
-  backoffLimit: 1
-
-  wait:
-    enabled: true
-    retries: 60
-    sleepSeconds: 5
-
-  init:
-    keyShares: 5
-    keyThreshold: 3
-
-  output:
-    mode: stdout
-    secretName: vault-init-output
-
-  resources: {}
-  
 bootstrapJob:
   enabled: true
 
@@ -92,12 +81,6 @@ bootstrapJob:
     accessMode: ReadWriteOnce
     storageClassName: ""
 
-  agentTokenStorage:
-    enabled: false
-    size: 1Gi
-    accessMode: ReadWriteOnce
-    storageClassName: ""
-
   resources: {}
 
 agentCleaner:
@@ -109,7 +92,6 @@ agentCleaner:
     pullPolicy: IfNotPresent
 
   vaultAddr: "http://vault-vault:8200"
-
   logLevel: info
 
   roleName: cleaner
@@ -117,15 +99,4 @@ agentCleaner:
   secretIdFile: /agent/credentials/cleaner_secret_id
   tokenFile: /agent/out/token
 
-  tokenStorage:
-    size: 1Gi
-    accessMode: ReadWriteOnce
-    storageClassName: ""
-
   resources: {}
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
