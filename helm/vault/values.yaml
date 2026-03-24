@@ -46,7 +46,7 @@ ingress:
   resources: {}
 
 initJob:
-  enabled: true
+  enabled: false
 
   image:
     repository: hashicorp/vault
