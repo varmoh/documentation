@@ -1,0 +1,17 @@
+{{- if .Values.bootstrapJob.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "vault.fullname" . }}-agent-creds
+  labels:
+    {{- include "vault.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - {{ .Values.bootstrapJob.agentCredentialsStorage.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.bootstrapJob.agentCredentialsStorage.size }}
+  {{- if .Values.bootstrapJob.agentCredentialsStorage.storageClassName }}
+  storageClassName: {{ .Values.bootstrapJob.agentCredentialsStorage.storageClassName }}
+  {{- end }}
+{{- end }}
