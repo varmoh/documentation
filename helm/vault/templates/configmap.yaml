@@ -18,4 +18,12 @@ data:
       path = "{{ .Values.config.storage.path }}"
     }
 
+    api_addr = "{{ .Values.config.apiAddr }}"
+
     disable_mlock = {{ .Values.config.disableMlock }}
+
+    default_lease_ttl = "{{ .Values.config.defaultLeaseTtl }}"
+    max_lease_ttl     = "{{ .Values.config.maxLeaseTtl }}"
+
+    log_level  = "{{ .Values.config.logLevel }}"
+    log_format = "{{ .Values.config.logFormat }}"
