@@ -42,6 +42,8 @@ ingress:
   host: vault
   path: /
   pathType: Prefix
+  
+  resources: {}
 
 initJob:
   enabled: true
@@ -92,6 +94,30 @@ bootstrapJob:
 
   agentTokenStorage:
     enabled: false
+    size: 1Gi
+    accessMode: ReadWriteOnce
+    storageClassName: ""
+
+  resources: {}
+
+agentCleaner:
+  enabled: true
+
+  image:
+    repository: hashicorp/vault
+    tag: "1.21.3"
+    pullPolicy: IfNotPresent
+
+  vaultAddr: "http://vault-vault:8200"
+
+  logLevel: info
+
+  roleName: cleaner
+  roleIdFile: /agent/credentials/cleaner_role_id
+  secretIdFile: /agent/credentials/cleaner_secret_id
+  tokenFile: /agent/out/token
+
+  tokenStorage:
     size: 1Gi
     accessMode: ReadWriteOnce
     storageClassName: ""
