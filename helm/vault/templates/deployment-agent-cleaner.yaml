@@ -1,0 +1,73 @@
+{{- if .Values.agentCleaner.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "vault.fullname" . }}-agent-cleaner
+  labels:
+    {{- include "vault.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "vault.name" . }}-agent-cleaner
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "vault.name" . }}-agent-cleaner
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: vault-agent-cleaner
+          image: "{{ .Values.agentCleaner.image.repository }}:{{ .Values.agentCleaner.image.tag }}"
+          imagePullPolicy: {{ .Values.agentCleaner.image.pullPolicy }}
+          command:
+            - vault
+            - agent
+            - -config=/vault/agent/agent.hcl
+            - -log-level={{ .Values.agentCleaner.logLevel }}
+          env:
+            - name: VAULT_ADDR
+              value: {{ .Values.agentCleaner.vaultAddr | quote }}
+          securityContext:
+            capabilities:
+              add:
+                - IPC_LOCK
+          volumeMounts:
+            - name: agent-config
+              mountPath: /vault/agent
+              readOnly: true
+            - name: agent-creds
+              mountPath: /agent/credentials
+            - name: agent-token
+              mountPath: /agent/out
+          readinessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -ec
+                - test -f {{ .Values.agentCleaner.tokenFile }} && test -s {{ .Values.agentCleaner.tokenFile }}
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 10
+          livenessProbe:
+            tcpSocket:
+              port: 8200
+            initialDelaySeconds: 20
+            periodSeconds: 20
+            timeoutSeconds: 3
+            failureThreshold: 5
+          resources:
+            {{- toYaml .Values.agentCleaner.resources | nindent 12 }}
+      volumes:
+        - name: agent-config
+          configMap:
+            name: {{ include "vault.fullname" . }}-agent-cleaner-config
+        - name: agent-creds
+          persistentVolumeClaim:
+            claimName: {{ include "vault.fullname" . }}-agent-creds
+        - name: agent-token
+          persistentVolumeClaim:
+            claimName: {{ include "vault.fullname" . }}-agent-token
+{{- end }}
