@@ -1,0 +1,84 @@
+{{- if .Values.initJob.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "vault.fullname" . }}-init
+  labels:
+    {{- include "vault.labels" . | nindent 4 }}
+spec:
+  backoffLimit: {{ .Values.initJob.backoffLimit }}
+  template:
+    metadata:
+      labels:
+        {{- include "vault.selectorLabels" . | nindent 8 }}
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: vault-init
+          image: "{{ .Values.initJob.image.repository }}:{{ .Values.initJob.image.tag }}"
+          imagePullPolicy: {{ .Values.initJob.image.pullPolicy }}
+          env:
+            - name: VAULT_ADDR
+              value: {{ .Values.initJob.vaultAddr | quote }}
+            - name: KEY_SHARES
+              value: {{ .Values.initJob.init.keyShares | quote }}
+            - name: KEY_THRESHOLD
+              value: {{ .Values.initJob.init.keyThreshold | quote }}
+            - name: OUTPUT_MODE
+              value: {{ .Values.initJob.output.mode | quote }}
+            - name: OUTPUT_SECRET_NAME
+              value: {{ .Values.initJob.output.secretName | quote }}
+          command:
+            - /bin/sh
+            - -ec
+            - |
+              {{- if .Values.initJob.wait.enabled }}
+              i=0
+              until vault status >/tmp/vault-status.txt 2>/tmp/vault-status.err; do
+                i=$((i+1))
+                if [ "$i" -ge {{ .Values.initJob.wait.retries }} ]; then
+                  echo "Vault is not reachable after {{ .Values.initJob.wait.retries }} attempts"
+                  cat /tmp/vault-status.err || true
+                  exit 1
+                fi
+                echo "Waiting for Vault at ${VAULT_ADDR}..."
+                sleep {{ .Values.initJob.wait.sleepSeconds }}
+              done
+              {{- end }}
+
+              if vault status 2>/tmp/status.err | grep -q 'Initialized[[:space:]]*true'; then
+                echo "Vault already initialized"
+                exit 0
+              fi
+
+              echo "Initializing Vault..."
+              INIT_OUTPUT="$(vault operator init -key-shares=${KEY_SHARES} -key-threshold=${KEY_THRESHOLD} -format=json)"
+              export INIT_OUTPUT
+
+              if [ "${OUTPUT_MODE}" = "stdout" ]; then
+                echo "${INIT_OUTPUT}"
+                exit 0
+              fi
+
+              if [ "${OUTPUT_MODE}" = "secret" ]; then
+                cat <<EOF >/tmp/init-secret.yaml
+              apiVersion: v1
+              kind: Secret
+              metadata:
+                name: ${OUTPUT_SECRET_NAME}
+              type: Opaque
+              stringData:
+                init.json: |
+              $(echo "${INIT_OUTPUT}" | sed 's/^/      /')
+              EOF
+
+                kubectl apply -f /tmp/init-secret.yaml
+                echo "Init output stored in Secret ${OUTPUT_SECRET_NAME}"
+                exit 0
+              fi
+
+              echo "Unknown OUTPUT_MODE: ${OUTPUT_MODE}"
+              exit 1
+          resources:
+            {{- toYaml .Values.initJob.resources | nindent 12 }}
+{{- end }}
