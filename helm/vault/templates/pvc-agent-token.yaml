@@ -1,0 +1,17 @@
+{{- if .Values.agentCleaner.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "vault.fullname" . }}-agent-token
+  labels:
+    {{- include "vault.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - {{ .Values.agentCleaner.tokenStorage.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.agentCleaner.tokenStorage.size }}
+  {{- if .Values.agentCleaner.tokenStorage.storageClassName }}
+  storageClassName: {{ .Values.agentCleaner.tokenStorage.storageClassName }}
+  {{- end }}
+{{- end }}
