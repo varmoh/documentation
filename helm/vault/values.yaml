@@ -65,7 +65,7 @@ initJob:
     keyThreshold: 3
 
   output:
-    mode: secret
+    mode: stdout
     secretName: vault-init-output
 
   resources: {}
