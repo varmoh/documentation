@@ -33,7 +33,7 @@ persistence:
 logs:
   enabled: true
 
-** Ingress tühjaks jätta, ei tohiks vajalik olla aga jätan võimaluse sisse
+## Ingress tühjaks jätta, ei tohiks vajalik olla aga jätan võimaluse sisse
 ingress:
   enabled: false
   className: nginx
