@@ -39,6 +39,7 @@ spec:
               readOnly: true
             - name: agent-creds
               mountPath: /agent/credentials
+              readOnly: true
             - name: agent-token
               mountPath: /agent/out
           readinessProbe:
@@ -56,7 +57,7 @@ spec:
               command:
                 - /bin/sh
                 - -ec
-                - ps aux | grep '[v]ault agent' >/dev/null
+                - pgrep -f "vault agent" >/dev/null
             initialDelaySeconds: 20
             periodSeconds: 20
             timeoutSeconds: 3
@@ -71,6 +72,5 @@ spec:
           persistentVolumeClaim:
             claimName: {{ include "vault.fullname" . }}-agent-creds
         - name: agent-token
-          persistentVolumeClaim:
-            claimName: {{ include "vault.fullname" . }}-agent-token
+          emptyDir: {}
 {{- end }}
