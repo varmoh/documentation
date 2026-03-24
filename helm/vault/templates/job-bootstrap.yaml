@@ -1,0 +1,51 @@
+{{- if .Values.bootstrapJob.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "vault.fullname" . }}-bootstrap
+  labels:
+    {{- include "vault.labels" . | nindent 4 }}
+spec:
+  backoffLimit: 1
+  template:
+    metadata:
+      labels:
+        {{- include "vault.selectorLabels" . | nindent 8 }}
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: vault-bootstrap
+          image: "{{ .Values.bootstrapJob.image.repository }}:{{ .Values.bootstrapJob.image.tag }}"
+          imagePullPolicy: {{ .Values.bootstrapJob.image.pullPolicy }}
+          command:
+            - /bin/sh
+            - -ec
+            - |
+              apk add --no-cache curl jq >/dev/null 2>&1 || true
+              chmod +x /vault/init.sh
+              /vault/init.sh
+          env:
+            - name: VAULT_ADDR
+              value: {{ .Values.bootstrapJob.vaultAddr | quote }}
+          volumeMounts:
+            - name: init-script
+              mountPath: /vault/init.sh
+              subPath: init.sh
+            - name: bootstrap-data
+              mountPath: /vault/data
+            - name: agent-creds
+              mountPath: /agent/credentials
+          resources:
+            {{- toYaml .Values.bootstrapJob.resources | nindent 12 }}
+      volumes:
+        - name: init-script
+          configMap:
+            name: {{ include "vault.fullname" . }}-init-script
+            defaultMode: 0755
+        - name: bootstrap-data
+          persistentVolumeClaim:
+            claimName: {{ include "vault.fullname" . }}-bootstrap
+        - name: agent-creds
+          persistentVolumeClaim:
+            claimName: {{ include "vault.fullname" . }}-agent-creds
+{{- end }}
