@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "vault.fullname" . }}
+  labels:
+    {{- include "vault.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "vault.fullname" . }}
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "vault.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "vault.selectorLabels" . | nindent 8 }}
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: vault
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - vault
+            - server
+            - -config=/vault/config/config.hcl
+          env:
+            - name: VAULT_ADDR
+              value: {{ .Values.vault.addr | quote }}
+            - name: VAULT_SKIP_VERIFY_CONFIG_PERMISSIONS
+              value: {{ .Values.vault.skipVerifyConfigPermissions | quote }}
+          ports:
+            - name: http
+              containerPort: 8200
+              protocol: TCP
+            - name: cluster
+              containerPort: 8201
+              protocol: TCP
+          securityContext:
+            capabilities:
+              add:
+                - IPC_LOCK
+          volumeMounts:
+            - name: config
+              mountPath: /vault/config
+              readOnly: true
+            - name: data
+              mountPath: /vault/file
+            {{- if .Values.logs.enabled }}
+            - name: logs
+              mountPath: /vault/logs
+            {{- end }}
+          readinessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -ec
+                - vault status -address=http://127.0.0.1:8200 >/dev/null 2>&1
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 12
+          livenessProbe:
+            tcpSocket:
+              port: 8200
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 6
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: config
+          configMap:
+            name: {{ include "vault.fullname" . }}-config
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ include "vault.fullname" . }}-data
+        {{- if .Values.logs.enabled }}
+        - name: logs
+          emptyDir: {}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
