@@ -1,0 +1,17 @@
+{{- if .Values.bootstrapJob.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "vault.fullname" . }}-bootstrap
+  labels:
+    {{- include "vault.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - {{ .Values.bootstrapJob.bootstrapStorage.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.bootstrapJob.bootstrapStorage.size }}
+  {{- if .Values.bootstrapJob.bootstrapStorage.storageClassName }}
+  storageClassName: {{ .Values.bootstrapJob.bootstrapStorage.storageClassName }}
+  {{- end }}
+{{- end }}
