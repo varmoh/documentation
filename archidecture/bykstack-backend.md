@@ -27,28 +27,31 @@ Frontend **ei tee kunagi päringuid** otse ühegi komponendi suunas, vältides R
 ```mermaid
 
 flowchart LR
-    FE[Frontend] --> R[Ruuter<br/>DSL orkestreerija<br/>keskne vahendaja]
+    FE[Frontend] --> R[Ruuter<br/>DSL orkestreerija]
 
-    R <--> DM[DataMapper<br/>Handlebars / JSON teisendused]
-    R <--> N[Notifications Node<br/>SSE ühendused frontendiga]
-    R <--> OS[OpenSearch<br/>tekstipõhine otsinguandmebaas]
-    R <--> CM[CronManager<br/>cronjob'ide käivitaja]
-    R <--> S3[s3ferry<br/>S3 kopeerimise handler]
+    R <--> DM[DataMapper]
+    R <--> N[Notifications Node]
+    R <--> OS[OpenSearch]
+    R <--> CM[CronManager]
+    R <--> S3[s3ferry]
 
-    R <--> RESQL[ResQL<br/>SQL päringute REST-kiht]
-    RESQL <--> PG[(PostgreSQL<br/>relatsiooniline andmebaas)]
+    R <--> RESQL[ResQL]
+    RESQL <--> PG[(PostgreSQL)]
 
-    R <--> TIM[TIM<br/>TARA Integration Module<br/>auth, cookies, JWT]
-    TIM <--> PG
+    R <--> TIM[TIM]
+    TIM <--> PG2[(TIM PostgreSQL)]
 
-    %% Keelatud otsesuhtlus andmebaasiga
-    R -. ei suhtle otse .-> PG
+    %% ERAND: Notifications -> OpenSearch
+    N --> OS
+
+    %% KEELATUD OTSESUHTLUSED (visuaalne vihje)
+    R -. no direct DB access .-> PG
+    R -. no direct DB access .-> PG2
 
     classDef core fill:#f5f5f5,stroke:#333,stroke-width:2px;
     classDef db fill:#eef,stroke:#333,stroke-width:2px;
     classDef service fill:#fff,stroke:#666;
 
     class R core;
-    class PG db;
-    class FE,DM,N,OS,CM,S3,RESQL,TIM service;
+    class PG,PG2 db;
 ```
