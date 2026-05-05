@@ -22,6 +22,8 @@ Stackis on **eraldatud andmebaasid** ning TIM suhtleb ainult oma andmebaasiga.
 - andmebaasidele
 - frontendile
 
+Erandina võib Notifications Node suhelda otse OpenSearchiga, näiteks reaalajas andmete vahendamiseks või otsingupäringute teenindamiseks.
+
 Frontend **ei tee kunagi päringuid** otse ühegi komponendi suunas, vältides Ruuterit.
 
 ```mermaid
