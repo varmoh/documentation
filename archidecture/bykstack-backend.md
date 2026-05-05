@@ -46,9 +46,7 @@ flowchart LR
     %% ERAND: Notifications -> OpenSearch
     N --> OS
 
-    %% KEELATUD OTSESUHTLUSED (visuaalne vihje)
-    R -. no direct DB access .-> PG
-    R -. no direct DB access .-> PG2
+
 
     classDef core fill:#f5f5f5,stroke:#333,stroke-width:2px;
     classDef db fill:#eef,stroke:#333,stroke-width:2px;
