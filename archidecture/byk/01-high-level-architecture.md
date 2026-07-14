@@ -179,7 +179,7 @@ The Bürokratt platform follows several core architectural principles:
 ## Related Documentation
 
 - Repository Overview
-- Component Documentation
+- Platform Components
 - Runtime Flows
 - Deployment Architecture
 - Architecture Decision Records
