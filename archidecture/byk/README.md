@@ -1,0 +1,1 @@
+> ⚠️ This documentation is a work in progress and aims to capture the current architecture of the Bürokratt platform. It may evolve as the platform develops and undocumented design decisions are discovered.
