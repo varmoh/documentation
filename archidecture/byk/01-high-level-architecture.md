@@ -70,6 +70,7 @@ subgraph Infrastructure
     PostgreSQL
     TARA
     S3
+    OpenSearch
 end
 
 %% Paigutus
