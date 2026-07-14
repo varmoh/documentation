@@ -68,7 +68,7 @@ The platform relies on several shared infrastructure services.
 | PostgreSQL | Persistent storage. |
 | TARA | External identity provider. |
 | S3-compatible storage | Object and file storage. |
-| OpenSearch | Search engine for indexing, querying, and analytics. |
+| OpenSearch | Search engine for indexing, querying. |
 
 ---
 
